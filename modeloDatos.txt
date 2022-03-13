@@ -1,0 +1,52 @@
+modelo de datos:
+
+https://josejuansanchez.org/bd/unidad-03-teoria/index.html
+
+--Relaciones--
+
+Foro 1,1 <contiene (1:n)> 1,n temas 1,1 <contiene (1:n) > 0,n preguntas 1,1 <contiene (1:n) > 0,n respuestas
+curso                         modulo
+respuestas 0,n <escribe (1:n)> 1,1 usuario 0,n <sigue (M:n)> 0,n pregunta
+
+notificaciones 0,n  <recibe M:n>    1,n usuario
+
+notificacion 0,n  <contiene (n:1)>  1,1  respuesta
+
+votoAnswer 0.n  <calficar (n:1)>  1,1 answer
+votoAnswer 0,n <emitir (n:1)> 1,1 user
+
+votoQuestion 0.n  <calficar (n:1)>  1,1 question
+votoQuestion 0,n <emitir (n:1)> 1,1 user
+
+
+--Paso al modelo relacional--
+
+Foro(id, nombre)
+
+tema(id, titulo, descripcion, id_foro)
+
+pregunta(id, titulo, categoria, cuerpo, dataTime, fijada, id_tema, id_usuario)
+
+respuesta(id, cuerpo, dataTime, fijada, util, id_pregunta, id_usuario)
+
+usuario(id, nombre, email, password, rol, avatar)
+
+	usuario-sigue-pregunta(id_usuario, id_pregunta)
+
+notificaciones(id, id_respuesta, dataTime, visto)
+
+	usuario-recibe-notificacion(id, id_usuario, id_notificación)
+
+votoQuestion(id, like, id_usuario, id_question)
+
+votoAnswer(id, like, id_usuario, id_answer)
+
+
+--Entidades y atributos--(esta es la primera versión que hice directamente para anotar las entidades y
+				atributos que veia las que estoy implementando son las de arriba)
+
+Usuario(id, nombre, email, password, rol, avatar, id_preguntaSeguida) Entidad fuerte
+Foro(id, id_temas, nombre) Entidad fuerte
+tema(id, id_foro, titulo, descripcion, id_pregunta) Entidad debil
+pregunta(id, id_Usuario, id_tema, titulo, categoria, cuerpo, gusta, noGusta, dataTime, id_respuestas, fijada) Entidad debil
+respuesta(id, id_Usuario, id_pregunta, cuerpo, gusta, noGusta, dataTime, fijada) Entidad debil
