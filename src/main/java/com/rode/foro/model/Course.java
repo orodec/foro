@@ -1,14 +1,13 @@
 package com.rode.foro.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 // Foro(id, nombre)
 
 @Entity
-public class Forum {
+@Table(name = "cursos")
+public class Course implements Serializable {
 
     // Attributes
 
@@ -19,10 +18,10 @@ public class Forum {
 
     // builders
 
-    public Forum() {
+    public Course() {
     }
 
-    public Forum(Long id, String name) {
+    public Course(Long id, String name) {
         this.id = id;
         this.name = name;
     }

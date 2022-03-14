@@ -2,6 +2,7 @@ package com.rode.foro.model;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 // https://www.oscarblancarteblog.com/2018/12/27/relaciones-manytomany/
@@ -9,7 +10,8 @@ import java.time.LocalDateTime;
 //        fijada, util, id_pregunta, id_usuario)
 
 @Entity
-public class Answer {
+@Table(name = "respuestas")
+public class Answer implements Serializable {
 
     // Attributes
     @Id

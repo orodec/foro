@@ -1,14 +1,12 @@
 package com.rode.foro;
 
 import com.rode.foro.model.Prueba;
-import com.rode.foro.model.User;
-import com.rode.foro.model.type.Rol;
-import com.rode.foro.repositories.UserRepository;
+import com.rode.foro.repositories.PruebaRepository;
+import com.rode.foro.type.Rol;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import com.rode.foro.repositories.PruebaRepository;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -19,9 +17,9 @@ public class ForoApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(ForoApplication.class, args);
-		UserRepository userRepository = context.getBean(UserRepository.class);
-		User user = new User(null, "Primer usuario", "ejemplo@gmail.com", "1234", Rol.user, "www.google.com");
-		userRepository.save(user);
+		// UserRepository userRepository = context.getBean(UserRepository.class);
+		//User user = new User(null, "Primer usuario", "ejemplo@gmail.com", "1234", Rol.user, "www.google.com");
+		// userRepository.save(user);
 
 		PruebaRepository pruebaRepository =  context.getBean(PruebaRepository.class);
 		Prueba prueba = new Prueba(null, "a ver si sale esto");

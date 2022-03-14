@@ -1,15 +1,18 @@
 package com.rode.foro.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @Entity
-public class VoteAnswer {
+@Table(name = "votos_respuestas")
+public class VoteAnswer implements Serializable {
 
     // Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Boolean vote;
 
     @ManyToOne
     private User user;
@@ -22,8 +25,9 @@ public class VoteAnswer {
     public VoteAnswer() {
     }
 
-    public VoteAnswer(Long id, User user, Answer answer) {
+    public VoteAnswer(Long id, Boolean vote, User user, Answer answer) {
         this.id = id;
+        this.vote = vote;
         this.user = user;
         this.answer = answer;
     }
@@ -36,6 +40,14 @@ public class VoteAnswer {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getVote() {
+        return vote;
+    }
+
+    public void setVote(Boolean vote) {
+        this.vote = vote;
     }
 
     public User getUser() {

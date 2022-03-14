@@ -1,11 +1,13 @@
 package com.rode.foro.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 // tema(id, titulo, descripcion, id_foro)
 
 @Entity
-public class Theme {
+@Table(name = "modulos")
+public class Modules implements Serializable {
     // Attributes
 
     @Id
@@ -14,14 +16,14 @@ public class Theme {
     private String title;
     private String description;
     @ManyToOne
-    private Forum forum;
+    private Course forum;
 
     // builders
 
-    public Theme() {
+    public Modules() {
     }
 
-    public Theme(Long id, String title, String description, Forum forum) {
+    public Modules(Long id, String title, String description, Course forum) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -54,11 +56,11 @@ public class Theme {
         this.description = description;
     }
 
-    public Forum getForum() {
+    public Course getForum() {
         return forum;
     }
 
-    public void setForum(Forum forum) {
+    public void setForum(Course forum) {
         this.forum = forum;
     }
 

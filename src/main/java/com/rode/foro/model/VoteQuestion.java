@@ -1,17 +1,17 @@
 package com.rode.foro.model;
 
-// votoQuestion(id, like, id_usuario, id_question)
-
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class VoteQuestion {
+@Table(name = "votos_preguntas")
+public class VoteQuestion implements Serializable {
 
     // Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Boolean like;
+    private Boolean vote;
 
     @ManyToOne
     private User user;
@@ -24,9 +24,9 @@ public class VoteQuestion {
     public VoteQuestion() {
     }
 
-    public VoteQuestion(Long id, Boolean like, User user, Question question) {
+    public VoteQuestion(Long id, Boolean vote, User user, Question question) {
         this.id = id;
-        this.like = like;
+        this.vote = vote;
         this.user = user;
         this.question = question;
     }
@@ -41,12 +41,12 @@ public class VoteQuestion {
         this.id = id;
     }
 
-    public Boolean getLike() {
-        return like;
+    public Boolean getVote() {
+        return vote;
     }
 
-    public void setLike(Boolean like) {
-        this.like = like;
+    public void setVote(Boolean like) {
+        this.vote = vote;
     }
 
     public User getUser() {
@@ -65,13 +65,11 @@ public class VoteQuestion {
         this.question = question;
     }
 
-    // toString
-
     @Override
     public String toString() {
         return "VoteQuestion{" +
                 "id=" + id +
-                ", like=" + like +
+                ", vote=" + vote +
                 ", user=" + user +
                 ", question=" + question +
                 '}';

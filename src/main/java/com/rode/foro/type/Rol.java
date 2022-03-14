@@ -1,4 +1,4 @@
-package com.rode.foro.model.type;
+package com.rode.foro.type;
 
     public enum Rol{ admin, moderator, user };
 

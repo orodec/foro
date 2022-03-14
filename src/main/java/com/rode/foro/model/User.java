@@ -1,6 +1,6 @@
 package com.rode.foro.model;
 
-import com.rode.foro.model.type.Rol;
+import com.rode.foro.type.Rol;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,7 +9,7 @@ import java.util.Set;
 // https://www.tutorialspoint.com/es/jpa/jpa_entity_relationships.htm
 // usuario(id, nombre, email, password, rol, avatar)
 @Entity
-@Table(name = "foro_user")
+@Table(name = "usuarios")
 public class User implements Serializable {
 
     // Attributes

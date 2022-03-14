@@ -1,12 +1,14 @@
 package com.rode.foro.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 // notificaciones(id, id_respuesta, dataTime, visto)
 @Entity
-public class Notification {
+@Table(name = "notificaciones")
+public class Notification implements Serializable {
 
     // Attributes
 

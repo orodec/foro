@@ -1,6 +1,8 @@
 package com.rode.foro.model;
 
-import com.rode.foro.model.type.Category;
+import com.rode.foro.type.Category;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 import javax.persistence.*;
@@ -9,7 +11,8 @@ import javax.persistence.*;
 //pregunta(id, titulo, categoria, cuerpo, gusta, noGusta,
 // dataTime, fijada, id_tema, id_usuario)
 @Entity
-public class Question {
+@Table(name = "preguntas")
+public class Question implements Serializable {
 
     // Attributes
     @Id
@@ -22,7 +25,7 @@ public class Question {
     private Boolean fixed;
 
     @ManyToOne
-    private Theme theme;
+    private Modules theme;
     @ManyToOne
     private User user;
 
@@ -35,7 +38,7 @@ public class Question {
     public Question() {
     }
 
-    public Question(Long id, String title, Category category, String body, LocalDateTime createTime, Boolean fixed, Theme theme, User user, Set userSet) {
+    public Question(Long id, String title, Category category, String body, LocalDateTime createTime, Boolean fixed, Modules theme, User user, Set userSet) {
         this.id = id;
         this.title = title;
         this.category = category;
@@ -97,11 +100,11 @@ public class Question {
         this.fixed = fixed;
     }
 
-    public Theme getTheme() {
+    public Modules getTheme() {
         return theme;
     }
 
-    public void setTheme(Theme theme) {
+    public void setTheme(Modules theme) {
         this.theme = theme;
     }
 
