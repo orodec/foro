@@ -4,8 +4,12 @@ https://josejuansanchez.org/bd/unidad-03-teoria/index.html
 
 --Relaciones--
 
-Foro 1,1 <contiene (1:n)> 1,n temas 1,1 <contiene (1:n) > 0,n preguntas 1,1 <contiene (1:n) > 0,n respuestas
-curso                         modulo
+curso 1,1 <contiene (1:n)> 1,n modulo 1,1 <contiene (1:n) > 0,n preguntas 1,1 <contiene (1:n) > 0,n respuestas
+
+CURSO 1,1 <CONTIENE(1:N)> 1,N TEMAS // ESTA LINEA LA IGNORO
+
+
+
 respuestas 0,n <escribe (1:n)> 1,1 usuario 0,n <sigue (M:n)> 0,n pregunta
 
 notificaciones 0,n  <recibe M:n>    1,n usuario

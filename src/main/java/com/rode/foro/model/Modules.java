@@ -16,18 +16,18 @@ public class Modules implements Serializable {
     private String title;
     private String description;
     @ManyToOne
-    private Course forum;
+    private Course course;
 
     // builders
 
     public Modules() {
     }
 
-    public Modules(Long id, String title, String description, Course forum) {
+    public Modules(Long id, String title, String description, Course course) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.forum = forum;
+        this.course = course;
     }
 
     // getter y setter
@@ -56,12 +56,12 @@ public class Modules implements Serializable {
         this.description = description;
     }
 
-    public Course getForum() {
-        return forum;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setForum(Course forum) {
-        this.forum = forum;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     // toString
@@ -72,7 +72,7 @@ public class Modules implements Serializable {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", forum=" + forum +
+                ", forum=" + course +
                 '}';
     }
 }

@@ -1,26 +1,39 @@
 package com.rode.foro.model;
 
-import com.rode.foro.type.Rol;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Set;
 
 // https://www.tutorialspoint.com/es/jpa/jpa_entity_relationships.htm
 // usuario(id, nombre, email, password, rol, avatar)
 @Entity
 @Table(name = "usuarios")
-public class User implements Serializable {
+public class User {
 
     // Attributes
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String email;
+
+    @Column
+    private String username;
+
+    @Column
+    @JsonIgnore
     private String password;
-    private Rol rol;
+
+    @Column
+    private String email;
+
+    @Column
+    private String phone;
+
+    @Column
+    private String name;
+
+    @Column
     private String avatar;
 
     @ManyToMany(targetEntity=Question.class)
@@ -29,30 +42,15 @@ public class User implements Serializable {
     @ManyToMany(targetEntity=Notification.class)
     private Set NotificationSet;
 
-    // builders
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "USER_ROLES",
+            joinColumns = {
+                    @JoinColumn(name = "USER_ID")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "ROLE_ID") })
+    private Set<Role> roles;
 
-    public User() {
-    }
-
-    public User(Long id, String name, String email, String password, Rol rol, String avatar, Set questionSet, Set notificationSet) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.rol = rol;
-        this.avatar = avatar;
-        this.questionSet = questionSet;
-        NotificationSet = notificationSet;
-    }
-
-    public User(Long id, String name, String email, String password, Rol rol, String avatar) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.rol = rol;
-        this.avatar = avatar;
-    }
 
     // getter y setter
 
@@ -64,12 +62,12 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -86,14 +84,6 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Rol getRol() {
-        return rol;
-    }
-
-    public void setRol(Rol rol) {
-        this.rol = rol;
     }
 
     public String getAvatar() {
@@ -120,20 +110,29 @@ public class User implements Serializable {
         NotificationSet = notificationSet;
     }
 
-    // toString
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", rol=" + rol +
-                ", avatar='" + avatar + '\'' +
-                ", questionSet=" + questionSet +
-                ", NotificationSet=" + NotificationSet +
-                '}';
+    public String getPhone() {
+        return phone;
     }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
 }
 
