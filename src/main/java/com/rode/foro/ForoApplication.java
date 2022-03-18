@@ -2,7 +2,7 @@ package com.rode.foro;
 
 import com.rode.foro.model.Prueba;
 import com.rode.foro.repositories.PruebaRepository;
-import com.rode.foro.services.TemaServiceImpl;
+import com.rode.foro.services.PrincipalServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -27,8 +27,8 @@ public class ForoApplication {
 
 		ArrayList usuarios = new ArrayList();
 
-		TemaServiceImpl temaServiceImpl = context.getBean(TemaServiceImpl.class);
-		System.out.println("Usando el service" + temaServiceImpl.retornaModulos());
+		// PrincipalServiceImpl temaServiceImpl = context.getBean(PrincipalServiceImpl.class);
+		// System.out.println("Usando el service" + temaServiceImpl.retornaModulos());
 
 
 		String nombreFichero = "src" + File.separator + "main" + File.separator + "java" + File.separator + "fichero.txt";

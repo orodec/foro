@@ -8,7 +8,7 @@ curso 1,1 <contiene (1:n)> 1,n modulo 1,1 <contiene (1:n) > 0,n preguntas 1,1 <c
 
 CURSO 1,1 <CONTIENE(1:N)> 1,N TEMAS // ESTA LINEA LA IGNORO
 
-
+usuario 0,n <estudia (n,n)> 1,n curso
 
 respuestas 0,n <escribe (1:n)> 1,1 usuario 0,n <sigue (M:n)> 0,n pregunta
 
@@ -25,9 +25,9 @@ votoQuestion 0,n <emitir (n:1)> 1,1 user
 
 --Paso al modelo relacional--
 
-Foro(id, nombre)
+curso(id, nombre)
 
-tema(id, titulo, descripcion, id_foro)
+modulo(id, titulo, descripcion, id_foro)
 
 pregunta(id, titulo, categoria, cuerpo, dataTime, fijada, id_tema, id_usuario)
 
@@ -36,6 +36,8 @@ respuesta(id, cuerpo, dataTime, fijada, util, id_pregunta, id_usuario)
 usuario(id, nombre, email, password, rol, avatar)
 
 	usuario-sigue-pregunta(id_usuario, id_pregunta)
+
+	usuario-estudia-curso(id_usuario, id_curso)
 
 notificaciones(id, id_respuesta, dataTime, visto)
 

@@ -36,6 +36,9 @@ public class User {
     @Column
     private String avatar;
 
+    @ManyToMany(targetEntity=Course.class)
+    private Set courseSet;
+
     @ManyToMany(targetEntity=Question.class)
     private Set questionSet;
 
@@ -92,6 +95,14 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public Set getCourseSet() {
+        return courseSet;
+    }
+
+    public void setCourseSet(Set courseSet) {
+        this.courseSet = courseSet;
     }
 
     public Set getQuestionSet() {

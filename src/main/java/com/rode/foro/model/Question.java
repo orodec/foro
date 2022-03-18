@@ -25,7 +25,7 @@ public class Question implements Serializable {
     private Boolean fixed;
 
     @ManyToOne
-    private Modules theme;
+    private Modules module;
     @ManyToOne
     private User user;
 
@@ -38,14 +38,14 @@ public class Question implements Serializable {
     public Question() {
     }
 
-    public Question(Long id, String title, Category category, String body, LocalDateTime createTime, Boolean fixed, Modules theme, User user, Set userSet) {
+    public Question(Long id, String title, Category category, String body, LocalDateTime createTime, Boolean fixed, Modules module, User user, Set userSet) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.body = body;
         this.createTime = createTime;
         this.fixed = fixed;
-        this.theme = theme;
+        this.module = module;
         this.user = user;
         this.userSet = userSet;
     }
@@ -100,12 +100,12 @@ public class Question implements Serializable {
         this.fixed = fixed;
     }
 
-    public Modules getTheme() {
-        return theme;
+    public Modules getModule() {
+        return module;
     }
 
-    public void setTheme(Modules theme) {
-        this.theme = theme;
+    public void setModule(Modules theme) {
+        this.module = theme;
     }
 
     public User getUser() {
@@ -135,7 +135,7 @@ public class Question implements Serializable {
                 ", body='" + body + '\'' +
                 ", createTime=" + createTime +
                 ", fixed=" + fixed +
-                ", theme=" + theme +
+                ", theme=" + module +
                 ", user=" + user +
                 ", userSet=" + userSet +
                 '}';
