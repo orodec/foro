@@ -54,8 +54,25 @@ public class User {
                     @JoinColumn(name = "ROLE_ID") })
     private Set<Role> roles;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "USER_PRUEBAS",
+            joinColumns = {
+                    @JoinColumn(name = "USER_ID")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "PRUEBA_ID") })
+    private Set<Prueba> prueba;
+
 
     // getter y setter
+
+    public Set<Prueba> getPrueba() {
+        return prueba;
+    }
+
+    public void setPrueba(Set<Prueba> prueba) {
+        this.prueba = prueba;
+    }
 
     public Long getId() {
         return id;

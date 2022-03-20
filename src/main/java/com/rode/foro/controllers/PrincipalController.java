@@ -1,10 +1,12 @@
 package com.rode.foro.controllers;
+import com.rode.foro.dto.UserPrincipal;
 import com.rode.foro.services.PrincipalServiceImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class PrincipalController {
@@ -23,9 +25,9 @@ public class PrincipalController {
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/foro/principal")
 
-    public List modulos(){
+    public UserPrincipal modulos(){
 
-        return temaServiceImpl.retornaModulos();
+        return temaServiceImpl.retornaPrincipal();
     }
 
 

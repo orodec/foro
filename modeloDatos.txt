@@ -29,7 +29,7 @@ curso(id, nombre)
 
 modulo(id, titulo, descripcion, id_foro)
 
-pregunta(id, titulo, categoria, cuerpo, dataTime, fijada, id_tema, id_usuario)
+pregunta(id, titulo, categoria, cuerpo, dataTime, fijada, id_modulo, id_usuario)
 
 respuesta(id, cuerpo, dataTime, fijada, util, id_pregunta, id_usuario)
 
