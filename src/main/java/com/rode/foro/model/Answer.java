@@ -1,6 +1,8 @@
 package com.rode.foro.model;
 
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;

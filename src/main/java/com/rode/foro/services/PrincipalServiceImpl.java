@@ -1,19 +1,16 @@
 package com.rode.foro.services;
 
+import com.rode.foro.dto.DiscusionDTO;
 import com.rode.foro.dto.PreguntasDTO;
+import com.rode.foro.dto.RespuestaDTO;
 import com.rode.foro.dto.UserPrincipal;
-import com.rode.foro.model.Course;
-import com.rode.foro.model.Modules;
-import com.rode.foro.model.Question;
-import com.rode.foro.model.User;
-import com.rode.foro.repositories.CourseRepository;
-import com.rode.foro.repositories.ModulesRepository;
-import com.rode.foro.repositories.QuestionRepository;
-import com.rode.foro.repositories.UserRepository;
+import com.rode.foro.model.*;
+import com.rode.foro.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -35,6 +32,23 @@ public class PrincipalServiceImpl implements PrincipalService {
 
     @Autowired
     private PreguntasDTO preguntasDTO;
+
+    @Autowired
+    private VoteQuestionRepository voteQuestionRepository;
+
+    @Autowired
+    private  VoteAnswerRepository voteAnswerRepository;
+
+    @Autowired
+    private AnswerRepository answerRepository;
+
+    @Autowired
+    private DiscusionDTO discusionDTO;
+
+    @Autowired
+    private RespuestaDTO respuestaDto;
+
+
 
 
 
@@ -85,14 +99,102 @@ public class PrincipalServiceImpl implements PrincipalService {
 
         for (Question pregunta: pregunatasTemporal
              ) {
+            preguntasDTO.setId(pregunta.getId());
             preguntasDTO.setFixed(pregunta.getFixed());
             preguntasDTO.setTitle(pregunta.getTitle());
             preguntasDTO.setCreateTime((pregunta.getCreateTime()));
+            preguntasDTO.setUsername( pregunta.getUser().getUsername() );
+            // Recuperar los votos positivos de la pregunta
+            List<VoteQuestion> votos = voteQuestionRepository.findByQuestion_idAndVote(pregunta.getId(), true);
+            preguntasDTO.setVotosPositivos(votos.size());
+            // recuperar el numero de respuestas
+            List<Answer> respuestas = answerRepository.findByQuestion_idOrderByCreateTimeAsc(pregunta.getId());
+            preguntasDTO.setNumeroRespuestas(respuestas.size());
+            List <String> ListaAvatar = new ArrayList<>();
+            ListaAvatar.add(pregunta.getUser().getAvatar());
+            for (Answer respuesta:respuestas
+                 ) {
+                ListaAvatar.add(respuesta.getUser().getAvatar());
+            }
+            if(ListaAvatar.size() > 3){
+                preguntasDTO.setAvatarUsuariosResponden(ListaAvatar.subList(0,3));
+            }else preguntasDTO.setAvatarUsuariosResponden(ListaAvatar);
+
             listaPreguntasDTO.add(preguntasDTO);
         }
 
 
 
         return  listaPreguntasDTO ;
+    }
+
+    @Override
+    public DiscusionDTO retornaDiscusionDTO(Long preguntaId) {
+        // recuperar datos de la pregunta solicitada
+        Optional preguntaOPT = questionRepository.findById(preguntaId);
+        Question pregunta = null;
+        if (preguntaOPT.isPresent()) { pregunta = (Question) preguntaOPT.get(); }
+        preguntasDTO.setId(pregunta.getId());
+        preguntasDTO.setFixed(pregunta.getFixed());
+        preguntasDTO.setTitle(pregunta.getTitle());
+        preguntasDTO.setCreateTime(pregunta.getCreateTime());
+        preguntasDTO.setUsername(pregunta.getUser().getUsername());
+        preguntasDTO.setAvatar(pregunta.getUser().getAvatar());
+        preguntasDTO.setBody(pregunta.getBody());
+        List<Answer> respuestasContador = answerRepository.findByQuestion_idOrderByCreateTimeAsc(pregunta.getId());
+        preguntasDTO.setNumeroRespuestas(respuestasContador.size());
+        List<VoteQuestion> votosPositivos = voteQuestionRepository.findByQuestion_idAndVote(pregunta.getId(), true);
+        preguntasDTO.setVotosPositivos(votosPositivos.size());
+        List<VoteQuestion> votosNegativos = voteQuestionRepository.findByQuestion_idAndVote(pregunta.getId(), false);
+        preguntasDTO.setVotosPositivos(votosNegativos.size());
+        discusionDTO.setPreguntasDTO(preguntasDTO);
+        // recuperar datos de las respuestas asociadas
+        List<Answer> respuestas = answerRepository.findByQuestion_idOrderByCreateTimeAsc(pregunta.getId());
+        List<RespuestaDTO> ListaRespuestasDto = new ArrayList<>();
+        for (Answer respuesta: respuestas
+             ) {
+            RespuestaDTO respuestaDtoTemporal = new RespuestaDTO();
+            respuestaDtoTemporal.setId(respuesta.getId());
+            respuestaDtoTemporal.setBody(respuesta.getBody());
+            respuestaDtoTemporal.setCreateTime(respuesta.getCreateTime());
+            respuestaDtoTemporal.setFixed(respuesta.getFixed());
+            respuestaDtoTemporal.setUtil(respuesta.getUtil());
+            respuestaDtoTemporal.setUser(respuesta.getUser().getUsername());
+            respuestaDtoTemporal.setAvatar(respuesta.getUser().getAvatar());
+            List<VoteAnswer> votosPositivosRespuesta = voteAnswerRepository.findByAnswer_idAndVote(respuesta.getId(), true);
+            respuestaDtoTemporal.setVotosPositivos(votosPositivos.size());
+            List<VoteAnswer> votosNegativosRespuesta = voteAnswerRepository.findByAnswer_idAndVote(respuesta.getId(), false);
+            respuestaDtoTemporal.setVotosNegativos(votosPositivos.size());
+            ListaRespuestasDto.add(respuestaDtoTemporal);
+        }
+        discusionDTO.setAnswer(ListaRespuestasDto);
+
+
+        return discusionDTO;
+    }
+
+    @Override
+    public DiscusionDTO nuevaRespuesta(String cuerpo, Long id) {
+        Answer answer = new Answer();
+        answer.setBody(cuerpo);
+        /*
+        LocalDateTime.now() para obtener la fecha y hora actual en Java
+        ZonedDateTime.now() para obtener la fecha y hora actual con la zona horaria en Java
+        Calendar.getinstance() para obtener la fecha y hora actual en Java
+                */
+        answer.setCreateTime(LocalDateTime.now());
+        answer.setFixed(false);
+        answer.setUtil(false);
+        Optional<Question> preguntaOpt = questionRepository.findById(id);
+        Question pregunta=null;
+        if(preguntaOpt.isPresent()){pregunta = preguntaOpt.get();}
+        answer.setQuestion(pregunta);
+        String nombre = SecurityContextHolder.getContext().getAuthentication().getName();
+        User usuario = userRepository.findByUsername(nombre);
+        answer.setUser(usuario);
+        answerRepository.save(answer);
+
+        return retornaDiscusionDTO(id);
+
     }
 }

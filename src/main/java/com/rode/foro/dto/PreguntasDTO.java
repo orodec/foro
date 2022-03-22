@@ -7,16 +7,30 @@ import java.util.List;
 
 @Component
 public class PreguntasDTO {
+// necesario para preguntas
+    private Long id;
     private Boolean fixed;
     private String title;
     private LocalDateTime createTime;
- // En segunda fase porque son mas dificiles de obtener
     private String username;
-    private Long votosPositivos;
-    private Long numeroRespuestas;
+    private int votosPositivos;
+    private int numeroRespuestas;
     private List<String> avatarUsuariosResponden;
+// necesario para la discusion
+    private int votosNegativos;
+    private String body;
+    private String avatar;
+
 
     public PreguntasDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Boolean getFixed() {
@@ -51,19 +65,19 @@ public class PreguntasDTO {
         this.username = username;
     }
 
-    public Long getVotosPositivos() {
+    public int getVotosPositivos() {
         return votosPositivos;
     }
 
-    public void setVotosPositivos(Long votosPositivos) {
+    public void setVotosPositivos(int votosPositivos) {
         this.votosPositivos = votosPositivos;
     }
 
-    public Long getNumeroRespuestas() {
+    public int getNumeroRespuestas() {
         return numeroRespuestas;
     }
 
-    public void setNumeroRespuestas(Long numeroRespuestas) {
+    public void setNumeroRespuestas(int numeroRespuestas) {
         this.numeroRespuestas = numeroRespuestas;
     }
 
@@ -73,6 +87,30 @@ public class PreguntasDTO {
 
     public void setAvatarUsuariosResponden(List<String> avatarUsuariosResponden) {
         this.avatarUsuariosResponden = avatarUsuariosResponden;
+    }
+
+    public int getVotosNegativos() {
+        return votosNegativos;
+    }
+
+    public void setVotosNegativos(int votosNegativos) {
+        this.votosNegativos = votosNegativos;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }
 
