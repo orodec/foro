@@ -11,4 +11,7 @@ import java.util.Set;
 @Repository
 public interface ModulesRepository extends JpaRepository<Modules, Long> {
     Set<Modules> findByCourse_id(Long course_id);
+    Set<Modules> findByCourse_idOrderByIdAsc(Long course_id);
+    Set<Modules> findByCourse_idOrderByIdDesc(Long course_id);
+
 }

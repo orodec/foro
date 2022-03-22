@@ -3,6 +3,8 @@ package com.rode.foro.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 // https://www.tutorialspoint.com/es/jpa/jpa_entity_relationships.htm
@@ -36,8 +38,21 @@ public class User {
     @Column
     private String avatar;
 
-    @ManyToMany(targetEntity=Course.class)
-    private Set courseSet;
+
+    // @ManyToMany(targetEntity=Course.class)
+/*
+   @ManyToMany(cascade = CascadeType.ALL)
+   @JoinTable(name = "usuarios_cursos",
+           joinColumns = @JoinColumn(name="usuarios_id"),
+           inverseJoinColumns = @JoinColumn(name="cursos_id") )
+
+ */
+
+   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @JoinTable(name = "usuarios_cursos",
+           joinColumns = @JoinColumn(name="usuarios_id"),
+           inverseJoinColumns = @JoinColumn(name="cursos_id") )
+   private Set<Course> courseSet = new HashSet<>();
 
     @ManyToMany(targetEntity=Question.class)
     private Set questionSet;
@@ -54,7 +69,7 @@ public class User {
                     @JoinColumn(name = "ROLE_ID") })
     private Set<Role> roles;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "USER_PRUEBAS",
             joinColumns = {
                     @JoinColumn(name = "USER_ID")

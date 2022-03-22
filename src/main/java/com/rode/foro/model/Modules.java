@@ -15,6 +15,8 @@ public class Modules implements Serializable {
     private Long id;
     private String title;
     private String description;
+    @Transient
+    private Integer preguntas;
     @ManyToOne
     private Course course;
 
@@ -64,7 +66,14 @@ public class Modules implements Serializable {
         this.course = course;
     }
 
-    // toString
+    public Integer getPreguntas() {
+        return preguntas;
+    }
+
+    public void setPreguntas(Integer preguntas) {
+        this.preguntas = preguntas;
+    }
+// toString
 
     @Override
     public String toString() {

@@ -1,5 +1,7 @@
 package com.rode.foro.dto;
 
+import com.rode.foro.model.Course;
+import com.rode.foro.model.Modules;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -10,13 +12,13 @@ import java.util.Set;
 public class UserPrincipal {
 
     String nombre;
-    Set cursos;
-    Set modulos;
+    List <Course> cursos;
+    List <Modules> modulos;
 
     public UserPrincipal() {
     }
 
-    public UserPrincipal(String nombre, Set cursos, Set modulos) {
+    public UserPrincipal(String nombre, List cursos, List modulos) {
         this.nombre = nombre;
         this.cursos = cursos;
         this.modulos = modulos;
@@ -30,19 +32,19 @@ public class UserPrincipal {
         this.nombre = nombre;
     }
 
-    public Set getCursos() {
+    public List getCursos() {
         return cursos;
     }
 
-    public void setCursos(Set cursos) {
+    public void setCursos(List cursos) {
         this.cursos = cursos;
     }
 
-    public Set getModulos() {
+    public List getModulos() {
         return modulos;
     }
 
-    public void setModulos(Set modulos) {
+    public void setModulos(List modulos) {
         this.modulos = modulos;
     }
 }

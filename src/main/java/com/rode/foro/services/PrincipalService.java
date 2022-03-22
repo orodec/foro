@@ -1,5 +1,6 @@
 package com.rode.foro.services;
 
+import com.rode.foro.dto.PreguntasDTO;
 import com.rode.foro.dto.UserPrincipal;
 import com.rode.foro.model.Modules;
 
@@ -11,4 +12,5 @@ public interface PrincipalService {
     //aproximacion metodo que retorne los modulos
 
     UserPrincipal retornaPrincipal();
+    List<PreguntasDTO> retornaPreguntasDTO(Long moduloId);
 }

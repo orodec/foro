@@ -1,7 +1,11 @@
 package com.rode.foro.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 // Foro(id, nombre)
 
@@ -16,14 +20,20 @@ public class Course implements Serializable {
     private Long id;
     private String name;
 
+    @ManyToMany( mappedBy = "courseSet")
+    @JsonIgnore // TODO si quitas esto se produce un json infinito, revisar porque sucede
+    // @ManyToMany(targetEntity=User.class)
+    private Set <User> usuarios = new HashSet<>();
+
     // builders
 
     public Course() {
     }
 
-    public Course(Long id, String name) {
+    public Course(Long id, String name, Set usuarios) {
         this.id = id;
         this.name = name;
+        this.usuarios = usuarios;
     }
 
     // getter y setter
@@ -44,7 +54,14 @@ public class Course implements Serializable {
         this.name = name;
     }
 
-    // toString
+    public Set getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(Set usuarios) {
+        this.usuarios = usuarios;
+    }
+// toString
 
     @Override
     public String toString() {
