@@ -14,6 +14,7 @@ public class Patata implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String texto;
+    private Boolean comestible;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "patata_gusanos",
@@ -22,6 +23,14 @@ public class Patata implements Serializable {
     private Set<Gusanos> gusanosSet = new HashSet<>();
 
     public Patata(){}
+
+    public Boolean getComestible() {
+        return comestible;
+    }
+
+    public void setComestible(Boolean comestible) {
+        this.comestible = comestible;
+    }
 
     public Long getId() {
         return id;

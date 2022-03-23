@@ -1,5 +1,7 @@
 package com.rode.foro.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -45,7 +47,7 @@ public class VoteQuestion implements Serializable {
         return vote;
     }
 
-    public void setVote(Boolean like) {
+    public void setVote(Boolean vote) {
         this.vote = vote;
     }
 

@@ -143,6 +143,47 @@
 				"url": null
 			},
 			"response": []
+		},
+		{
+			"name": "votar pregunta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "/foro/voto_pregunta/{id_pregunta}",
+					"path": [
+						"foro",
+						"voto_pregunta",
+						"{id_pregunta}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "votar respuesta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "/foro/voto_pregunta/{id_pregunta}",
+					"path": [
+						"foro",
+						"voto_pregunta",
+						"{id_pregunta}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guardar patata",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
 		}
 	]
 }

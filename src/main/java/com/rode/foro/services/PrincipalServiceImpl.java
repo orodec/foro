@@ -1,12 +1,8 @@
 package com.rode.foro.services;
 
-import com.rode.foro.dto.DiscusionDTO;
-import com.rode.foro.dto.PreguntasDTO;
-import com.rode.foro.dto.RespuestaDTO;
-import com.rode.foro.dto.UserPrincipal;
+import com.rode.foro.dto.*;
 import com.rode.foro.model.*;
 import com.rode.foro.repositories.*;
-import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -48,6 +44,14 @@ public class PrincipalServiceImpl implements PrincipalService {
 
     @Autowired
     private RespuestaDTO respuestaDto;
+
+    @Autowired
+    private VotosDTO votosDTO;
+
+    @Autowired
+    private PatataRepository patataRepository;
+
+
 
 
 
@@ -147,7 +151,7 @@ public class PrincipalServiceImpl implements PrincipalService {
         List<VoteQuestion> votosPositivos = voteQuestionRepository.findByQuestion_idAndVote(pregunta.getId(), true);
         preguntasDTO.setVotosPositivos(votosPositivos.size());
         List<VoteQuestion> votosNegativos = voteQuestionRepository.findByQuestion_idAndVote(pregunta.getId(), false);
-        preguntasDTO.setVotosPositivos(votosNegativos.size());
+        preguntasDTO.setVotosNegativos(votosNegativos.size());
         discusionDTO.setPreguntasDTO(preguntasDTO);
         // recuperar datos de las respuestas asociadas
         List<Answer> respuestas = answerRepository.findByQuestion_idOrderByCreateTimeAsc(pregunta.getId());
@@ -163,9 +167,9 @@ public class PrincipalServiceImpl implements PrincipalService {
             respuestaDtoTemporal.setUser(respuesta.getUser().getUsername());
             respuestaDtoTemporal.setAvatar(respuesta.getUser().getAvatar());
             List<VoteAnswer> votosPositivosRespuesta = voteAnswerRepository.findByAnswer_idAndVote(respuesta.getId(), true);
-            respuestaDtoTemporal.setVotosPositivos(votosPositivos.size());
+            respuestaDtoTemporal.setVotosPositivos(votosPositivosRespuesta.size());
             List<VoteAnswer> votosNegativosRespuesta = voteAnswerRepository.findByAnswer_idAndVote(respuesta.getId(), false);
-            respuestaDtoTemporal.setVotosNegativos(votosPositivos.size());
+            respuestaDtoTemporal.setVotosNegativos(votosPositivosRespuesta.size());
             ListaRespuestasDto.add(respuestaDtoTemporal);
         }
         discusionDTO.setAnswer(ListaRespuestasDto);
@@ -212,5 +216,52 @@ public class PrincipalServiceImpl implements PrincipalService {
         questionRepository.save(pregunta);
 
         return retornaDiscusionDTO(pregunta.getId());
+        // TODO revisar porque categoria viene a null
+    }
+
+    @Override
+    public VotosDTO VotoPreegunta(VoteQuestion voto, Long id_pregunta) {
+        String nombre = SecurityContextHolder.getContext().getAuthentication().getName();
+        User usuario = userRepository.findByUsername(nombre);
+        voto.setUser(usuario);
+        Optional<Question> pregunaOpt = questionRepository.findById(id_pregunta);
+        Question pregunta = pregunaOpt.get();
+        voto.setQuestion(pregunta);
+        voteQuestionRepository.save(voto);
+
+        List<VoteQuestion> votosPositivos = voteQuestionRepository.findByQuestion_idAndVote(pregunta.getId(), true);
+        votosDTO.setVotosPositivos(votosPositivos.size());
+        List<VoteQuestion> votosNegativos = voteQuestionRepository.findByQuestion_idAndVote(pregunta.getId(), false);
+        votosDTO.setVotosNegativos(votosNegativos.size());
+        votosDTO.setItem("PREGUNTA");
+        votosDTO.setId(id_pregunta);
+
+        return votosDTO;
+    }
+
+    @Override
+    public void guardarPatata(Patata patata) {
+        System.out.println(patata);
+        patataRepository.save(patata);
+    }
+
+    @Override
+    public VotosDTO VotoRespuesta(VoteAnswer voto, Long id_respuesta) {
+        String nombre = SecurityContextHolder.getContext().getAuthentication().getName();
+        User usuario = userRepository.findByUsername(nombre);
+        voto.setUser(usuario);
+        Optional<Answer> respuestaOpt = answerRepository.findById(id_respuesta);
+        Answer respuesta = respuestaOpt.get();
+        voto.setAnswer(respuesta);
+        voteAnswerRepository.save(voto);
+
+        List<VoteAnswer> votosPositivos = voteAnswerRepository.findByAnswer_idAndVote(respuesta.getId(), true);
+        votosDTO.setVotosPositivos(votosPositivos.size());
+        List<VoteAnswer> votosNegativos = voteAnswerRepository.findByAnswer_idAndVote(respuesta.getId(), false);
+        votosDTO.setVotosNegativos(votosNegativos.size());
+        votosDTO.setItem("RESPUESTA");
+        votosDTO.setId(id_respuesta);
+
+        return votosDTO;
     }
 }
