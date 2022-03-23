@@ -1,6 +1,7 @@
 package com.rode.foro;
 
 import com.rode.foro.model.Prueba;
+import com.rode.foro.repositories.PatataRepository;
 import com.rode.foro.repositories.PruebaRepository;
 import com.rode.foro.services.PrincipalServiceImpl;
 import org.springframework.boot.SpringApplication;
@@ -26,6 +27,13 @@ public class ForoApplication {
 		pruebaRepository.save(prueba);
 
 		ArrayList usuarios = new ArrayList();
+
+		// TODO al borrar en relaciones ManyToMany se borra todo relacionado con el id en la tabala patata_gusanos tambien el gusano relacionado y las otras patas que teneian ese gusano, estudiar orque y solucionar
+		/*
+		PatataRepository patataRepository = context.getBean(PatataRepository.class);
+		patataRepository.deleteById(1l);
+
+		 */
 
 		// PrincipalServiceImpl temaServiceImpl = context.getBean(PrincipalServiceImpl.class);
 		// System.out.println("Usando el service" + temaServiceImpl.retornaModulos());

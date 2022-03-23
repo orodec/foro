@@ -1,0 +1,148 @@
+{
+	"info": {
+		"_postman_id": "3e9d7967-0064-4237-a080-659a262910cc",
+		"name": "Foro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "registrar usuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"Oscar3\",\r\n    \"password\":\"1234\",\r\n    \"email\":\"oscar3@gmail.com\",\r\n    \"phone\":\"615789789\",\r\n    \"name\":\"Oscar Rodenas\",\r\n    \"avatar\":\"https://www.google.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login usuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"Oscar3\",\r\n    \"password\":\"1234\",\r\n    \"email\":\"oscar3@gmail.com\",\r\n    \"phone\":\"615789789\",\r\n    \"name\":\"Oscar Rodenas\",\r\n    \"avatar\":\"https://www.google.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cursos del usuario y modulos de cada curso",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "    eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJPc2NhcjMiLCJyb2xlcyI6IlJPTEVfVVNFUiIsImlhdCI6MTY0ODAyMjE5MywiZXhwIjoxNjQ4MDQwMTkzfQ.Td3Foig5wvK-n_P5Nffr7XBuN3-jNDMj7ZcZC_svx0w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:3333/foro/principal",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3333",
+					"path": [
+						"foro",
+						"principal"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "solicita una discusion por el id de la pregunta",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "    eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJPc2NhcjMiLCJyb2xlcyI6IlJPTEVfVVNFUiIsImlhdCI6MTY0ODAyMjE5MywiZXhwIjoxNjQ4MDQwMTkzfQ.Td3Foig5wvK-n_P5Nffr7XBuN3-jNDMj7ZcZC_svx0w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/foro/discusiones/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"foro",
+						"discusiones",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Responder a una pregunta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		},
+		{
+			"name": "nueva pregunta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		}
+	]
+}

@@ -12,7 +12,7 @@ public class Gusanos implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String texto;
-    @ManyToMany(mappedBy = "gusanosSet" )
+    @ManyToMany(mappedBy = "gusanosSet", cascade = CascadeType.ALL )
     private Set <Patata> patatasSet = new HashSet<>();
 
     public Gusanos(){}

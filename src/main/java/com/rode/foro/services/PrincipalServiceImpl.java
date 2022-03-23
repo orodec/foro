@@ -6,6 +6,7 @@ import com.rode.foro.dto.RespuestaDTO;
 import com.rode.foro.dto.UserPrincipal;
 import com.rode.foro.model.*;
 import com.rode.foro.repositories.*;
+import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -196,5 +197,20 @@ public class PrincipalServiceImpl implements PrincipalService {
 
         return retornaDiscusionDTO(id);
 
+    }
+
+    @Override
+    public DiscusionDTO nuevaPregunta( Question pregunta, Long id_modulo) {
+        pregunta.setCreateTime(LocalDateTime.now());
+        pregunta.setFixed(false);
+        Optional<Modules> miModuloOpt = modulesRepository.findById(id_modulo);
+        Modules miModulo = miModuloOpt.get();
+        pregunta.setModule(miModulo);
+        String nombre = SecurityContextHolder.getContext().getAuthentication().getName();
+        User usuario = userRepository.findByUsername(nombre);
+        pregunta.setUser(usuario);
+        questionRepository.save(pregunta);
+
+        return retornaDiscusionDTO(pregunta.getId());
     }
 }
