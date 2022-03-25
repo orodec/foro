@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\":\"Oscar3\",\r\n    \"password\":\"1234\",\r\n    \"email\":\"oscar3@gmail.com\",\r\n    \"phone\":\"615789789\",\r\n    \"name\":\"Oscar Rodenas\",\r\n    \"avatar\":\"https://www.google.com\"\r\n}",
+					"raw": "{\r\n    \"username\":\"Oscar6\",\r\n    \"password\":\"1234\",\r\n    \"email\":\"oscar6@moderador.com\",\r\n    \"phone\":\"615789789\",\r\n    \"name\":\"Oscar Rodenas\",\r\n    \"avatar\":\"https://www.google.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -41,7 +41,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\":\"Oscar3\",\r\n    \"password\":\"1234\",\r\n    \"email\":\"oscar3@gmail.com\",\r\n    \"phone\":\"615789789\",\r\n    \"name\":\"Oscar Rodenas\",\r\n    \"avatar\":\"https://www.google.com\"\r\n}",
+					"raw": "{\r\n    \"username\":\"Oscar3\",\r\n    \"password\":\"1234\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -49,7 +49,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3333/users/register",
+					"raw": "http://localhost:3333/users/authenticate",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -57,7 +57,7 @@
 					"port": "3333",
 					"path": [
 						"users",
-						"register"
+						"authenticate"
 					]
 				}
 			},
@@ -129,32 +129,113 @@
 		{
 			"name": "Responder a una pregunta",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "    eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJPc2NhcjMiLCJyb2xlcyI6IlJPTEVfVVNFUiIsImlhdCI6MTY0ODAyMjE5MywiZXhwIjoxNjQ4MDQwMTkzfQ.Td3Foig5wvK-n_P5Nffr7XBuN3-jNDMj7ZcZC_svx0w",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
-				"url": null
+				"body": {
+					"mode": "raw",
+					"raw": "respuesta a la pregunta creada desde postman"
+				},
+				"url": {
+					"raw": "http://localhost:3333/foro/discusiones/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"foro",
+						"discusiones",
+						"3"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "nueva pregunta",
 			"request": {
-				"method": "GET",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "    eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJPc2NhcjMiLCJyb2xlcyI6IlJPTEVfVVNFUiIsImlhdCI6MTY0ODAyMjE5MywiZXhwIjoxNjQ4MDQwMTkzfQ.Td3Foig5wvK-n_P5Nffr7XBuN3-jNDMj7ZcZC_svx0w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
 				"header": [],
-				"url": null
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"Mi primera preguna creada desde postman\",\r\n    \"Category\" : \"Anuncio\",\r\n    \"body\" : \"Esperemos que salga bien\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/foro/nueva_pregunta/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"foro",
+						"nueva_pregunta",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "votar pregunta",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "    eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJPc2NhcjMiLCJyb2xlcyI6IlJPTEVfVVNFUiIsImlhdCI6MTY0ODA1NTk5NSwiZXhwIjoxNjQ4MDczOTk1fQ.bZaALS422ifKjBG6LZtePFcwzDNWAyG0LeEU_m2_6lI",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"vote\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "/foro/voto_pregunta/{id_pregunta}",
+					"raw": "http://localhost:3333/foro/voto_pregunta/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
 					"path": [
 						"foro",
 						"voto_pregunta",
-						"{id_pregunta}"
+						"1"
 					]
 				}
 			},
@@ -163,14 +244,38 @@
 		{
 			"name": "votar respuesta",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "    eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJPc2NhcjMiLCJyb2xlcyI6IlJPTEVfVVNFUiIsImlhdCI6MTY0ODA1NTk5NSwiZXhwIjoxNjQ4MDczOTk1fQ.bZaALS422ifKjBG6LZtePFcwzDNWAyG0LeEU_m2_6lI",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"vote\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "/foro/voto_pregunta/{id_pregunta}",
+					"raw": "http://localhost:3333/foro/voto_respuesta/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
 					"path": [
 						"foro",
-						"voto_pregunta",
-						"{id_pregunta}"
+						"voto_respuesta",
+						"1"
 					]
 				}
 			},
@@ -179,9 +284,39 @@
 		{
 			"name": "guardar patata",
 			"request": {
-				"method": "GET",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "    eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJPc2NhcjMiLCJyb2xlcyI6IlJPTEVfVVNFUiIsImlhdCI6MTY0ODA1NTk5NSwiZXhwIjoxNjQ4MDczOTk1fQ.bZaALS422ifKjBG6LZtePFcwzDNWAyG0LeEU_m2_6lI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
 				"header": [],
-				"url": null
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"texto\": \"miPatata\",\r\n    \"comestible\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/foro/patata",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"foro",
+						"patata"
+					]
+				}
 			},
 			"response": []
 		}

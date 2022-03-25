@@ -70,4 +70,14 @@ public class UserController {
         return "Any User Can Read This";
     }
 
+    @GetMapping("/hola")
+    public String welcome(){
+        return "Bienvenido!!";
+    }
+
+    @PostMapping("/recibe")
+    public String recibe(@RequestBody String entra){
+        return "esto me ha llegado: " + entra;
+    }
+
 }
