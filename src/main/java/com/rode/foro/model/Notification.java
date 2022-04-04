@@ -22,7 +22,7 @@ public class Notification implements Serializable {
     private Answer answer;
 
     @ManyToMany(targetEntity=User.class)
-    private Set userSet;
+    private Set<User> userSet;
 
     // builders
 
@@ -71,11 +71,11 @@ public class Notification implements Serializable {
         this.answer = answer;
     }
 
-    public Set getUserSet() {
+    public Set<User> getUserSet() {
         return userSet;
     }
 
-    public void setUserSet(Set userSet) {
+    public void setUserSet(Set<User> userSet) {
         this.userSet = userSet;
     }
 

@@ -1,24 +1,29 @@
 package com.rode.foro.controllers;
-import com.rode.foro.dto.DiscusionDTO;
-import com.rode.foro.dto.PreguntasDTO;
-import com.rode.foro.dto.UserPrincipal;
-import com.rode.foro.dto.VotosDTO;
-import com.rode.foro.model.Patata;
-import com.rode.foro.model.Question;
-import com.rode.foro.model.VoteAnswer;
-import com.rode.foro.model.VoteQuestion;
+import com.rode.foro.dto.*;
+import com.rode.foro.model.*;
+import com.rode.foro.repositories.QuestionRepository;
+import com.rode.foro.repositories.UserRepository;
 import com.rode.foro.services.PrincipalServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class PrincipalController {
     PrincipalServiceImpl principalServiceImpl;
+
+    @Autowired
+    QuestionRepository questionRepository;
+    @Autowired
+    UserRepository userRepository;
 
     public PrincipalController(PrincipalServiceImpl temaServiceImpl) {
         this.principalServiceImpl = temaServiceImpl;
@@ -48,15 +53,32 @@ public class PrincipalController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @GetMapping("/foro/discusiones-seguir/{id_pregunta}")
+    public void seguir(@PathVariable Long id_pregunta){
+        String nombre = SecurityContextHolder.getContext().getAuthentication().getName();
+        User usuarioTemporal = userRepository.findByUsername(nombre);
+
+        Set<Question> questionSet = usuarioTemporal.getQuestionSet();
+
+        Optional preguntaOPT = questionRepository.findById(id_pregunta);
+        Question pregunta = null;
+        if (preguntaOPT.isPresent()) { pregunta = (Question) preguntaOPT.get(); }
+
+        questionSet.add(pregunta);
+        usuarioTemporal.setQuestionSet(questionSet);
+        userRepository.save(usuarioTemporal);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("/foro/discusiones/{id_pregunta}")
-    public DiscusionDTO nuevaRespuesta (@RequestBody String cuerpo, @PathVariable Long id_pregunta){
+    public DiscusionDTO nuevaRespuesta (@RequestBody NuevaRespuestaDTO cuerpo, @PathVariable Long id_pregunta){
 
         return principalServiceImpl.nuevaRespuesta(cuerpo, id_pregunta);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("/foro/nueva_pregunta/{id_modulo}")
-    public DiscusionDTO nuevaPreegunta(@RequestBody Question pregunta, @PathVariable Long id_modulo){
+    public DiscusionDTO nuevaPreegunta(@RequestBody NuevaPreguntaDTO pregunta, @PathVariable Long id_modulo){
 
         return principalServiceImpl.nuevaPregunta(pregunta, id_modulo);
     }

@@ -1,9 +1,6 @@
 package com.rode.foro.services;
 
-import com.rode.foro.dto.DiscusionDTO;
-import com.rode.foro.dto.PreguntasDTO;
-import com.rode.foro.dto.UserPrincipal;
-import com.rode.foro.dto.VotosDTO;
+import com.rode.foro.dto.*;
 import com.rode.foro.model.Patata;
 import com.rode.foro.model.Question;
 import com.rode.foro.model.VoteAnswer;
@@ -21,9 +18,9 @@ public interface PrincipalService {
 
     DiscusionDTO retornaDiscusionDTO(Long preguntaId);
 
-    DiscusionDTO nuevaRespuesta(String cuerpo, Long id);
+    DiscusionDTO nuevaRespuesta(NuevaRespuestaDTO cuerpo, Long id);
 
-    DiscusionDTO nuevaPregunta(Question pregunta, Long id_modulo);
+    DiscusionDTO nuevaPregunta(NuevaPreguntaDTO pregunta, Long id_modulo);
 
     VotosDTO VotoPreegunta(VoteQuestion voto, Long id_pregunta);
 

@@ -1,6 +1,9 @@
 package com.rode.foro.dto;
 
+import com.rode.foro.model.Course;
 import com.rode.foro.model.User;
+
+import java.util.Set;
 
 public class UserDto {
     
@@ -10,6 +13,7 @@ public class UserDto {
     private String phone;
     private String name;
     private String avatar;
+    private Set<Course> cursosSet;
 
 
     public String getUsername() {
@@ -60,6 +64,14 @@ public class UserDto {
         this.avatar = avatar;
     }
 
+    public Set<Course> getCursosSet() {
+        return cursosSet;
+    }
+
+    public void setCursosSet(Set<Course> cursosSet) {
+        this.cursosSet = cursosSet;
+    }
+
     public User getUserFromDto(){
         User user = new User();
         user.setUsername(username);
@@ -68,6 +80,7 @@ public class UserDto {
         user.setPhone(phone);
         user.setName(name);
         user.setAvatar(avatar);
+        user.setCourseSet(cursosSet);
         
         return user;
     }

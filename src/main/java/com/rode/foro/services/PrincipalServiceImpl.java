@@ -1,5 +1,6 @@
 package com.rode.foro.services;
 
+import com.pusher.rest.Pusher;
 import com.rode.foro.dto.*;
 import com.rode.foro.model.*;
 import com.rode.foro.repositories.*;
@@ -50,6 +51,9 @@ public class PrincipalServiceImpl implements PrincipalService {
 
     @Autowired
     private PatataRepository patataRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
 
 
@@ -104,17 +108,18 @@ public class PrincipalServiceImpl implements PrincipalService {
 
         for (Question pregunta: pregunatasTemporal
              ) {
-            preguntasDTO.setId(pregunta.getId());
-            preguntasDTO.setFixed(pregunta.getFixed());
-            preguntasDTO.setTitle(pregunta.getTitle());
-            preguntasDTO.setCreateTime((pregunta.getCreateTime()));
-            preguntasDTO.setUsername( pregunta.getUser().getUsername() );
+            PreguntasDTO NuevaPreguntaDTO = new PreguntasDTO();
+            NuevaPreguntaDTO.setId(pregunta.getId());
+            NuevaPreguntaDTO.setFixed(pregunta.getFixed());
+            NuevaPreguntaDTO.setTitle(pregunta.getTitle());
+            NuevaPreguntaDTO.setCreateTime((pregunta.getCreateTime()));
+            NuevaPreguntaDTO.setUsername( pregunta.getUser().getUsername() );
             // Recuperar los votos positivos de la pregunta
             List<VoteQuestion> votos = voteQuestionRepository.findByQuestion_idAndVote(pregunta.getId(), true);
-            preguntasDTO.setVotosPositivos(votos.size());
+            NuevaPreguntaDTO.setVotosPositivos(votos.size());
             // recuperar el numero de respuestas
             List<Answer> respuestas = answerRepository.findByQuestion_idOrderByCreateTimeAsc(pregunta.getId());
-            preguntasDTO.setNumeroRespuestas(respuestas.size());
+            NuevaPreguntaDTO.setNumeroRespuestas(respuestas.size());
             List <String> ListaAvatar = new ArrayList<>();
             ListaAvatar.add(pregunta.getUser().getAvatar());
             for (Answer respuesta:respuestas
@@ -122,10 +127,10 @@ public class PrincipalServiceImpl implements PrincipalService {
                 ListaAvatar.add(respuesta.getUser().getAvatar());
             }
             if(ListaAvatar.size() > 3){
-                preguntasDTO.setAvatarUsuariosResponden(ListaAvatar.subList(0,3));
-            }else preguntasDTO.setAvatarUsuariosResponden(ListaAvatar);
+                NuevaPreguntaDTO.setAvatarUsuariosResponden(ListaAvatar.subList(0,3));
+            }else NuevaPreguntaDTO.setAvatarUsuariosResponden(ListaAvatar);
 
-            listaPreguntasDTO.add(preguntasDTO);
+            listaPreguntasDTO.add(NuevaPreguntaDTO);
         }
 
 
@@ -179,9 +184,9 @@ public class PrincipalServiceImpl implements PrincipalService {
     }
 
     @Override
-    public DiscusionDTO nuevaRespuesta(String cuerpo, Long id) {
+    public DiscusionDTO nuevaRespuesta(NuevaRespuestaDTO cuerpo, Long id) {
         Answer answer = new Answer();
-        answer.setBody(cuerpo);
+        answer.setBody(cuerpo.getRespuesta());
         /*
         LocalDateTime.now() para obtener la fecha y hora actual en Java
         ZonedDateTime.now() para obtener la fecha y hora actual con la zona horaria en Java
@@ -198,13 +203,39 @@ public class PrincipalServiceImpl implements PrincipalService {
         User usuario = userRepository.findByUsername(nombre);
         answer.setUser(usuario);
         answerRepository.save(answer);
+        //  cuando se guarde una respuesta buscar si algún user sigue la pregunta
+        Set<User> usuariosSigiendo = userRepository.findByQuestionSet(pregunta);
+        if(usuariosSigiendo.size() > 0){
 
+            Notification notification = new Notification();
+            notification.setCreateTime(LocalDateTime.now());
+            notification.setViewed(false);
+            notification.setAnswer(answer);
+            notification.setUserSet(usuariosSigiendo);
+            notificationRepository.save(notification);
+            // abrir socket
+            Pusher pusher = new Pusher("1371775", "5f78611f659644b983f7", "3d88dae7ec15d2baa16b");
+            pusher.setCluster("eu");
+            pusher.setEncrypted(true);
+
+            for (User usuarioSiguiendo:
+                 usuariosSigiendo) {
+                String message = "Alguien contesto a la pregunta que sigues, titulada: " + pregunta.getTitle();
+                 pusher.trigger(usuarioSiguiendo.getEmail(), "my-event", Collections.singletonMap("message", message ));
+            }
+
+
+
+        }
         return retornaDiscusionDTO(id);
 
     }
 
     @Override
-    public DiscusionDTO nuevaPregunta( Question pregunta, Long id_modulo) {
+    public DiscusionDTO nuevaPregunta( NuevaPreguntaDTO nuevaPregunta, Long id_modulo) {
+        Question pregunta = new Question();
+        pregunta.setBody(nuevaPregunta.getBody());
+        pregunta.setTitle(nuevaPregunta.getTitle());
         pregunta.setCreateTime(LocalDateTime.now());
         pregunta.setFixed(false);
         Optional<Modules> miModuloOpt = modulesRepository.findById(id_modulo);
@@ -213,6 +244,7 @@ public class PrincipalServiceImpl implements PrincipalService {
         String nombre = SecurityContextHolder.getContext().getAuthentication().getName();
         User usuario = userRepository.findByUsername(nombre);
         pregunta.setUser(usuario);
+
         questionRepository.save(pregunta);
 
         return retornaDiscusionDTO(pregunta.getId());

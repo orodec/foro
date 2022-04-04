@@ -19,6 +19,7 @@ public class Course implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String logo;
 
     @ManyToMany( mappedBy = "courseSet")
     @JsonIgnore // TODO si quitas esto se produce un json infinito, revisar porque sucede
@@ -61,7 +62,15 @@ public class Course implements Serializable {
     public void setUsuarios(Set usuarios) {
         this.usuarios = usuarios;
     }
-// toString
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+    // toString
 
     @Override
     public String toString() {

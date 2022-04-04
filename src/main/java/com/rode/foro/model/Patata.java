@@ -15,6 +15,7 @@ public class Patata implements Serializable {
     private Long id;
     private String texto;
     private Boolean comestible;
+    private String prueba;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "patata_gusanos",

@@ -4,8 +4,12 @@ import com.rode.foro.config.TokenProvider;
 import com.rode.foro.dto.AuthToken;
 import com.rode.foro.dto.LoginUser;
 import com.rode.foro.dto.UserDto;
+import com.rode.foro.model.Course;
 import com.rode.foro.model.User;
+import com.rode.foro.repositories.CourseRepository;
+import com.rode.foro.repositories.UserRepository;
 import com.rode.foro.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,16 +17,28 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
+
     private AuthenticationManager authenticationManager;
     private TokenProvider jwtTokenUtil;
     private UserService userService;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    CourseRepository courseRepository;
 
     public UserController(AuthenticationManager authenticationManager, TokenProvider jwtTokenUtil, UserService userService) {
         this.authenticationManager = authenticationManager;
@@ -32,7 +48,12 @@ public class UserController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> generateToken(@RequestBody LoginUser loginUser) throws AuthenticationException {
-
+       //__ Con estas lineas logueo por email en lugar de por usuario____
+        User usuario = userRepository.findByEmail(loginUser.getEmail());
+        String name="";
+        if(usuario != null){name = usuario.getUsername();}
+            loginUser.setUsername(name);
+       //______________________________________________________________
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginUser.getUsername(),
@@ -49,6 +70,9 @@ public class UserController {
     public User saveUser(@RequestBody UserDto user){
         // prueba a lanzar excepción customizada
         // throw new EmailAlreadyExistsException("Email ocupado");
+        List<Course> cursosTodosLista = courseRepository.findAll();
+        Set<Course> cursosTodosSet = new HashSet<>(cursosTodosLista);
+        user.setCursosSet(cursosTodosSet);
         return userService.save(user);
     }
 
